@@ -1,4 +1,7 @@
 node_modules/
+dist/
 .env
-db/*.db
-db/*.db-journal
+*.db
+*.db-wal
+*.db-shm
+*.db-journal

@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
-const { authenticate } = require('../middleware/auth');
+const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Compared against when the email is unknown, so login takes similar time either way.
 const DUMMY_HASH = bcrypt.hashSync('not-a-real-password', 10);
 
+// The user id goes in the standard "sub" claim; the middleware reads it back.
 function signToken(user) {
   return jwt.sign({ role: user.role }, process.env.JWT_SECRET, {
     subject: String(user.id),
@@ -99,12 +100,12 @@ router.post('/login', async (req, res, next) => {
 });
 
 // POST /api/auth/logout  (the client deletes its token; this confirms the action)
-router.post('/logout', authenticate, (req, res) => {
+router.post('/logout', requireAuth, (req, res) => {
   res.json({ message: 'Logged out' });
 });
 
 // GET /api/auth/me  (who am I? used by React on page refresh)
-router.get('/me', authenticate, (req, res) => {
+router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 

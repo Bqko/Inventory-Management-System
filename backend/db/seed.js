@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 const db = require('./index');
 
 const users = [
-  ['Admin User',   'admin@inventory.test',   'Admin123!',   'admin'],
-  ['Manager User', 'manager@inventory.test', 'Manager123!', 'manager'],
-  ['Staff User',   'staff@inventory.test',   'Staff123!',   'staff'],
+  ['Ada Admin',    'admin@example.com',   'Admin123!',   'admin'],
+  ['Mark Manager', 'manager@example.com', 'Manager123!', 'manager'],
+  ['Sara Staff',   'staff@example.com',   'Staff123!',   'staff'],
 ];
 
 const categories = ['Fasteners', 'Power Tools', 'Safety Gear', 'Electrical', 'Packaging'];

@@ -12,7 +12,9 @@ const app = express();
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 
-// Member A adds: app.use('/api/auth', require('./routes/auth'));
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/admin', require('./routes/admin'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/suppliers', require('./routes/suppliers'));
 app.use('/api/categories', require('./routes/categories'));

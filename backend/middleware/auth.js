@@ -1,23 +1,31 @@
-// CONTRACT WITH MEMBER A
-// Member A owns login/register and may replace the internals of this file,
-// but these two exports and req.user = { id, role } must stay the same,
-// because every route below depends on them.
 const jwt = require('jsonwebtoken');
+const db = require('../db');
 const { HttpError } = require('../utils/errors');
 
+// 1) Who are you? Verifies the token and loads the user from the database.
+//    The role is read from the DB on every request, so a role change by an
+//    admin takes effect immediately. Fails with 401.
 function requireAuth(req, res, next) {
-  const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
-  if (!token) return next(new HttpError(401, 'Not logged in'));
+  const [scheme, token] = (req.headers.authorization || '').split(' ');
+  if (scheme !== 'Bearer' || !token) return next(new HttpError(401, 'Not logged in'));
+
+  let payload;
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: payload.id, role: payload.role };
-    next();
+    payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch {
-    next(new HttpError(401, 'Invalid or expired token'));
+    return next(new HttpError(401, 'Invalid or expired token'));
   }
+
+  const user = db
+    .prepare('SELECT id, name, email, role FROM users WHERE id = ?')
+    .get(Number(payload.sub));
+  if (!user) return next(new HttpError(401, 'Account no longer exists'));
+
+  req.user = user; // { id, name, email, role }
+  next();
 }
 
+// 2) What may you do? Use after requireAuth. Fails with 403.
 // Usage: requireRole('manager', 'admin')
 function requireRole(...roles) {
   return (req, res, next) => {
@@ -29,4 +37,5 @@ function requireRole(...roles) {
   };
 }
 
-module.exports = { requireAuth, requireRole };
+// "authenticate" is the name used in Member A's original code
+module.exports = { requireAuth, authenticate: requireAuth, requireRole };
