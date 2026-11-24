@@ -6,7 +6,7 @@ A web app for tracking products, suppliers and stock levels. Staff record stock 
 
 **Team:** Faezeh Ramezani Demneh, Bakuri Sheklashvili, Lile Bzekalava
 
-**Figma design:** https://www.figma.com/design/Vy3ZzU7aMxL8KAgEVgmD7n/Inventory-Management-System (view access)
+**Figma design:** `https://www.figma.com/design/Vy3ZzU7aMxL8KAgEVgmD7n/Inventory-Management-System` (view access)
 
 ## Stack
 
@@ -112,9 +112,9 @@ A stock out that would take the quantity below zero returns 409 and changes noth
 
 | Member | Part |
 |--------|------|
-| Faezeh Ramezani Demneh | Figma design and React interface |
-| Bakuri Sheklashvili | TO FILL IN |
-| Lile Bzekalava | TO FILL IN |
+| Faezeh Ramezani Demneh | Figma design and React frontend (all pages, styles, role-based interface) |
+| Lile Bzekalava | Authentication and roles: register, login, logout, password hashing (bcrypt), JWT tokens, role checks, admin user routes |
+| Bakuri Sheklashvili | Backend: database schema and seed data, REST API for products, suppliers, categories and stock movements, server-side validation, merging login into the backend |
 
 ## Never commit
 
