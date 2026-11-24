@@ -6,7 +6,7 @@ A web app for tracking products, suppliers and stock levels. Staff record stock 
 
 **Team:** Faezeh Ramezani Demneh, Bakuri Sheklashvili, Lile Bzekalava
 
-**Figma design:** _add the view-access link here_
+**Figma design:** https://www.figma.com/design/Vy3ZzU7aMxL8KAgEVgmD7n/Inventory-Management-System (view access)
 
 ## Stack
 
@@ -33,6 +33,38 @@ npm run dev       # http://localhost:4000
 ```
 
 The schema is in `backend/db/schema.sql`. Seed data (users, categories, suppliers, products, stock movements) is in `backend/db/seed.js`.
+
+## Run the frontend
+
+Requires Node.js 20 or newer. Start the backend first: it must be running on port 4000.
+
+```
+cd frontend
+npm install
+npm run dev       # http://localhost:5173
+```
+
+Open http://localhost:5173 and log in with one of the test logins below. Vite forwards every `/api` request to `http://localhost:4000`, so no CORS setup is needed. `npm run build` creates a production build in `frontend/dist`.
+
+### Frontend structure
+
+```
+frontend/src
+  main.jsx, App.jsx    entry point and routes
+  api.js               one fetch helper: adds the token, turns errors into exceptions
+  AuthContext.jsx      logged-in user, login / register / logout
+  useLoad.js           loads data from the API with loading and error state
+  styles.css           design tokens (colors, fonts) and all styles
+  components/          Layout (sidebar), ProtectedRoute, Modal, ConfirmDialog, Field, MovementModal
+  pages/               Login, Register, Dashboard, Products, ProductForm,
+                       Suppliers, Categories, Movements (admin), Users (admin)
+```
+
+Buttons a role may not use are hidden and routes are guarded in React, but the server still enforces every permission and answers 403.
+
+### Design
+
+The design was made in Figma before the interface was built: wireframes, final screens (login, dashboard, products list, product form) and a style guide with colors, fonts, buttons and form fields. One main color (safety orange) on neutral paper and ink colors, IBM Plex Sans and IBM Plex Mono, dense readable tables, status shown by color and text, and clear empty, error and loading states. It works on mobile and desktop.
 
 ## Test logins
 
@@ -75,6 +107,14 @@ New accounts created through the register page always get the role `staff`.
 
 Errors are always JSON: `{ "error": "message", "details": { "field": "problem" } }`.
 A stock out that would take the quantity below zero returns 409 and changes nothing.
+
+## Team
+
+| Member | Part |
+|--------|------|
+| Faezeh Ramezani Demneh | Figma design and React interface |
+| Bakuri Sheklashvili | TO FILL IN |
+| Lile Bzekalava | TO FILL IN |
 
 ## Never commit
 
