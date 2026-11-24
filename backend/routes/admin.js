@@ -1,12 +1,12 @@
 const express = require('express');
 const db = require('../db');
-const { authenticate, requireRole } = require('../middleware/auth');
+const { requireAuth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 const ROLES = ['admin', 'manager', 'staff'];
 
 // Everything in this file is admin only.
-router.use(authenticate, requireRole('admin'));
+router.use(requireAuth, requireRole('admin'));
 
 // GET /api/admin/users
 router.get('/users', (req, res) => {
